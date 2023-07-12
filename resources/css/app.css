@@ -1,0 +1,36 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+label{
+    @apply mt-4 w-64;
+}
+
+.caracteristicas{
+    @apply  text-xl font-bold;
+}
+
+#curso{
+    @apply text-center;
+}
+
+.values{
+    @apply h-10 w-60 relative right-8 font-semibold rounded-lg text-xl text-black outline-none;
+}
+
+
+@layer base{
+    tr{
+        @apply border-2 w-16;
+    }
+    th{
+        @apply border-2;
+    }
+    td{
+        @apply border-2 border-gray-400;
+    }
+    input{
+        @apply text-black;
+    }
+}
+
