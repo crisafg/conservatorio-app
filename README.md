@@ -1,3 +1,22 @@
+This is a project where the final objective is to make a CRUD PHP application, converted to an executable.
+In order to do it, I utilise this technologies for the backend side:
+
+*PHP/Laravel
+*Mysql/PHPMyadmin
+
+And for the frontend side:
+
+*HTML, Tailwind CSS
+*Javascript
+
+The project is still going, right now I'm working on the database relations and design aspects. I will post here any updates on the project.
+
+
+
+
+
+
+
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
 <p align="center">
