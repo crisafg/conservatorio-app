@@ -16,7 +16,7 @@ class AlumnosController extends Controller
     {
         //
         $alumnos = Alumno::with('escolaridades', 'instrumentos')
-        ->orderBy('id', 'asc')
+        ->orderBy('Curso', 'asc')
         ->get();
         return view('alumnos.vistaGeneral', ['alumnos' => $alumnos]);
     }

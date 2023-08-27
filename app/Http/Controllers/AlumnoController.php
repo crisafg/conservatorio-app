@@ -73,7 +73,8 @@ class AlumnoController extends Controller
     {
         //
         $alumno=Alumno::findOrFail($id);
-        return view('conservatorio.edit', compact('alumno'));
+        $escolaridad= $alumno->escolaridades;
+        return view('conservatorio.edit', compact('alumno', 'escolaridad'));
     }
 
     /**
@@ -82,16 +83,25 @@ class AlumnoController extends Controller
     public function update(Request $request, $id)
     {
         //
+        //Alumno
         $datosAlumno = request()->except('_token', '_method');
         if($request->hasFile('Foto')){
             $alumno=Alumno::findOrFail($id);
             Storage::delete('public/'.$alumno->Foto);   
             $datosAlumno['Foto'] = $request->file('Foto')->store('uploads','public');
         }
-
         Alumno::where('id', '=', $id)->update($datosAlumno);
         $alumno=Alumno::findOrFail($id);
-        return view('conservatorio.edit', compact('alumno'));
+   
+        // $datosEscolaridad = $request->input('escolaridad');
+        // $fechaEscolaridad = $datosEscolaridad['FechaEscolaridad'];
+        // $cursoEscolaridad = $datosEscolaridad['CursoEscolaridad'];
+        // $calificacionEscolaridad = $datosEscolaridad['CalificacionEscolaridad'];
+        // $faltasEscolaridad = $datosEscolaridad['CalificacionEscolaridad'];
+        // $observacionEscolaridad = $datosEscolaridad['ObservacionEscolaridad'];
+        
+
+        return redirect('conservatorio','edit')->with('status', 'Datos de alumnos actualizados!');
     }
 
     /**

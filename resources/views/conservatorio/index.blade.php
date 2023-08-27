@@ -10,6 +10,12 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
 </head>
+<!-- <script src="https://cdn.tailwindcss.com"></script> -->
+    <!-- <style type="text/tailwindcss">
+        #items{
+            @apply text-xl border border-slate-600;
+        }
+    </style> -->
 
 <body class="bg-gradient-to-r from-blue-600 to-blue-700">
     <header class="bg-gradient-to-r from-blue-600 to-blue-700 h-32">
@@ -22,8 +28,13 @@
             </p>
             
             <!-- Buscador -->
-            <div class="w-full">
-                <input class="w-96 outline-none p-2" id="search"  placeholder="Buscar por nombre, apellido o cédula..."  type="text"><ul class='absolute top-[80%] z-[999]' id="sugerencias"></ul></input>
+            <div class="">
+                <input class="w-[28rem]  p-3 rounded" id="search"  placeholder="Buscar por nombre, apellido o cédula..."  type="text">
+                    <ul class='absolute bg-slate-200  w-[28rem] p-3 ' id="sugerencias">
+                        <li class="border border-slate-400 ">hola</li>
+                        <li >ca</li>
+                    </ul>
+                </input>
             </div> 
         </div>
     </header>
@@ -65,12 +76,20 @@
     </section>
 </body>
 <script>
-    // let search= document.querySelector('#search');
-    // var alumnos = {!! json_encode($alumno) !!};
-    // let alumnoNombre= alumnos[0].Nombre;
-    // search.addEventListener('input', ()=>{
-    //     const searched= search.value.toLowerCase();
-    //     console.log(searched);
-    // })
+let search = document.querySelector('#search');
+// let sugerencias= document.querySelector('#sugerencias');
+var alumnos = <?php echo json_encode($alumno)?>;
+
+    search.addEventListener('input', () => {
+        const searched = search.value.toLowerCase();
+
+        for (let i = 0; i < alumnos.length; i++) {
+            let alumno = alumnos[i].Nombre.toLowerCase().charAt();
+
+            if (alumno.includes(searched)) {
+                console.log(alumnos[i].Nombre);
+            }
+        }
+    });
 </script>
 </html>

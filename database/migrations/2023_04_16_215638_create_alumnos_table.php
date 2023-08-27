@@ -16,10 +16,8 @@ return new class extends Migration
         if(!Schema::hasTable('alumnos')){
             Schema::create('alumnos', function (Blueprint $table) {
                 $table->engine = 'InnoDB';  
-                // $table->id();
                 $table->id();
-                $table->bigInteger('escolaridades_id')->unsigned()->index()->nullable();
-                $table->foreign('escolaridades_id')->references('id')->on('escolaridades')->onDelete('cascade');
+                $table->string('Curso');
                 $table->string('Foto');
                 $table->string('Nombre');
                 $table->string('Apellido');

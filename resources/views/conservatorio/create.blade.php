@@ -40,7 +40,7 @@
                 <ul class="grid grid-cols-2 items-baseline">
                             @csrf        
                     <input class="hidden" type="file" name="Foto"  id="imagen">
-                    <label for="imagen" id='imgUploaded'  class="absolute left-[80rem] bottom-[22rem] w-14 cursor-pointer">
+                    <label for="imagen" id='imgUploaded'  class="absolute left-[88rem] bottom-[22rem] w-14 cursor-pointer">
                         <img id='img' src="{{ asset('/img/add_photo.png') }}" alt="Agregar foto">
                     </label>
 
@@ -50,9 +50,9 @@
                     <label class="caracteristicas" for="Apellido">Apellido</label>
                     <input class="values" type="text" name="Apellido" value="Perez">
                     
-                    <label class="caracteristicas" for="id">Curso</label>
+                    <label class="caracteristicas" for="Curso">Curso</label>
                     <input oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
-                    class="values" max="6" minlength="1" maxlength="1" name="id" type="number" value="1">
+                    class="values" max="6" minlength="1" maxlength="1" name="Curso" type="number" value="1">
                     
                     <label class="caracteristicas" for="Cedula">Cédula</label>
                     <input oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
@@ -93,7 +93,7 @@
         <div id="lecto" class="mt-2.5 relative ml-4">
             <form  id="form_2" action="{{ url('/carnet') }}" method="post" enctype="multipart/form-data" >
                 @csrf
-                <table class="border-2"> 
+                <table id="table-parent" class="border-2"> 
                     <thead>
                         <th>Fecha</th>
                         <th>Curso</th>
@@ -103,6 +103,7 @@
                     </thead>
 
                     <tr>
+                        <input name="id" class="hidden">
                         <td id="date" class="w-1/12 bg-slate-50">
                             <input class="w-full" type="date" name="FechaEscolaridad[]" value="2021-05-09">
                         </td>
@@ -123,56 +124,16 @@
                         </td>
                     </tr>
 
-                    <tr>
-                        <td id="date" class="w-1/12 bg-slate-50">
-                            <input class="w-full" type="date" name="FechaEscolaridad[]" value="">
-                        </td>
-                        <td id="curso" class="bg-slate-50">
-                            <input oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
-                            class="w-full text-center" maxlength="1" min="1" max="6" type="number" name="CursoEscolaridad[]" value="">
-                        </td>
-                        <td id="calificacion" class="w-2 bg-slate-50">
-                            <input oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
-                            class="w-full text-center" min="1" max="12" maxlength="2" type="number" name="CalificacionEscolaridad[]" value="">
-                        </td>
-                        <td id="instrumento" class="w-2 bg-slate-50">
-                            <input oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
-                            class="w-full text-center" min="1" max="12" maxlength="2<" type="number" name="Faltas[]" value="">
-                        </td>
-                        <td id="observacion" class="w-64 bg-slate-50">
-                            <input class="w-full" type="text" name="Observacion[]" value="">
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td id="date" class="w-1/12 bg-slate-50">
-                            <input class="w-full" type="date" name="FechaEscolaridad[]" value="">
-                        </td>
-                        <td id="curso" class="bg-slate-50">
-                            <input oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
-                            class="w-full text-center" maxlength="1" min="1" max="6" type="number" name="CursoEscolaridad[]" value="">
-                        </td>
-                        <td id="calificacion" class="w-2 bg-slate-50">
-                            <input oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
-                            class="w-full text-center" min="1" max="12" maxlength="2" type="number" name="CalificacionEscolaridad[]" value="">
-                        </td>
-                        <td id="instrumento" class="w-2 bg-slate-50">
-                            <input oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
-                            class="w-full text-center" min="1" max="12" maxlength="2<" type="number" name="Faltas[]" value="">
-                        </td>
-                        <td id="observacion" class="w-64 bg-slate-50">
-                            <input class="w-full" type="text" name="Observacion[]" value="">
-                        </td>
-                    </tr>
                     </table>
                 </form>      
             </div>
-
+            
+            
             <!-- Instrumento -->
             <div id="instr" class="hidden mt-2.5 relative ml-4">
             <form  id="form_3" action="{{ url('/instrumento') }}" method="post" enctype="multipart/form-data" >
                 @csrf
-                <table class="border-2"> 
+                <table id="table-parent" class="border-2"> 
                     <thead>
                         <th>Fecha</th>
                         <th>Curso</th>
@@ -204,6 +165,14 @@
                     </tr>
                     </table>
                 </form>      
+            </div>
+
+            <div>
+                <button id="coll-btn">
+                    <span class="material-symbols-outlined">
+                    expand_more
+                    </span>
+                </button>
             </div>
         </section>
         
@@ -277,6 +246,7 @@
         }
     }); 
 
+ 
 
     // Imagen seleccionada en input
     let img= document.querySelector('#img');
@@ -286,9 +256,46 @@
         img.src= URL.createObjectURL(input.files[0]);
         // ajustes de dimensiones de imagen subida.
         newImg.style.width='7rem';
-        newImg.style.left='77.5rem';
+        newImg.style.left='84rem';
         newImg.style.bottom='19rem';
     };
+
+    // collapse button
+
+    let collBtn= document.querySelector('#coll-btn');
+    let inputs = [...document.querySelectorAll('#inputs')];
+    let nullInputs = []; 
+    
+    let table= document.querySelectorAll('#table-parent');
+    collBtn.addEventListener('click', ()=>{
+        for (let i = 0; i < table.length; i++) {
+        let nrow= document.createElement('tr');
+        const row= nrow.innerHTML= `
+                <tr>
+                    <input name="id" class="hidden">    
+                    <td id="date" class="w-1/12 bg-slate-50">
+                        <input class="w-full" type="date" name="FechaEscolaridad[]" value="">
+                    </td>
+                    <td id="curso" class="bg-slate-50">
+                        <input oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                        class="w-full text-center" maxlength="1" min="1" max="6" type="number" name="CursoEscolaridad[]" value="">
+                    </td>
+                    <td id="calificacion" class="w-2 bg-slate-50">
+                        <input oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                        class="w-full text-center" min="1" max="12" maxlength="2" type="number" name="CalificacionEscolaridad[]" value="">
+                    </td>
+                    <td id="faltas" class="w-2 bg-slate-50">
+                        <input oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                        class="w-full text-center" min="1" max="12" maxlength="2<" type="number" name="Faltas[]" value="">
+                    </td>
+                    <td id="observacion" class="w-64 bg-slate-50">
+                        <input class="w-full" type="text" name="Observacion[]" value="">
+                    </td>
+                </tr>
+            `
+                table[i].appendChild(nrow);
+            }
+    });
 
 </script>
 </html>

@@ -30,9 +30,8 @@ Route::get('conservatorio/edit/{id}', [App\Http\Controllers\AlumnoController::cl
 Route::patch('conservatorio/edit/{id}', [App\Http\Controllers\AlumnoController::class, 'update'])->name('conservatorio.update');
 Route::get('conservatorio/{id}', [App\Http\Controllers\AlumnoController::class, 'show'])->name('conservatorio.show');
 
-Route::get('carnet/edit/{escolaridades_id}', [App\Http\Controllers\EscolaridadController::class, 'edit'])->name('carnet.edit');
-Route::patch('carnet/edit/{escolaridades_id}', [App\Http\Controllers\EscolaridadController::class, 'update'])->name('carnet.update');
+// Route::get('carnet/edit/{id}', [App\Http\Controllers\EscolaridadController::class, 'edit'])->name('carnet.edit');
+// Route::patch('carnet/edit/{id}', [App\Http\Controllers\EscolaridadController::class, 'update'])->name('carnet.update');
 
 // Route::get('alumnos/vistaGeneral', [App\Http\Controllers\AlumnosController::class, 'show'])->name('alumnos.show');
-// Route::get('carnet/index', 'carnet@show')->name('carnet.show');
 // Route::get('instrumento/index', 'instrumento@show')->name('instrumento.show');

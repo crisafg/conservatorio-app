@@ -45,9 +45,10 @@
     
     <section class="flex ml-20">
     <div>
-        <form id='form_1' action="{{ url ('conservatorio/edit/'.$alumno->id) }}" method="post" enctype="multipart/form-data" class="contents">
+        <form id='form_1' action="{{ url ('conservatorio/edit/' .$alumno->id) }}" method="post" enctype="multipart/form-data" class="contents">
             <ul class="grid grid-cols-2 items-baseline">
                 @csrf 
+
                 {{ method_field('PATCH') }}
                 <!-- <input name="_method" type="hidden" value="PUT"> -->
                     <input class="hidden" type="file" name="Foto"  id="imagen">
@@ -64,9 +65,9 @@
                     <label class="caracteristicas" for="Apellido">Apellido</label>
                     <input class="values" type="text" name="Apellido" value="{{ $alumno->Apellido }}">
                     
-                    <label class="caracteristicas" for="id">Curso</label>
+                    <label class="caracteristicas" for="Curso">Curso</label>
                     <input oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
-                    class="values" max="6" minlength="1" maxlength="1" name="id" type="number" value="{{ $alumno->id }}">
+                    class="values" max="6" minlength="1" maxlength="1" name="Curso" type="number" value="{{ $alumno->Curso }}">
                     
                     <label class="caracteristicas" for="Cedula">Cédula</label>
                     <input oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
@@ -104,11 +105,11 @@
                 </form> 
             </div>
                 <!-- Lecto(escolaridades) -->                 
-                    <div id="showLecto" class=" mt-2.5 relative right-2">
-                    <form id='form_2' action="{{ url ('carnet/edit/' .$alumno->escolaridades_id) }}" method="post" enctype="multipart/form-data" class="contents">
-                            @csrf
+                <div id="showLecto" class=" mt-2.5 relative right-2">
+                    <form id='form_2' action="{{ route('conservatorio.edit', ['id' => $alumno->id]) }}" method="post" enctype="multipart/form-data" class="contents">
+                        @csrf
                             {{ method_field('PATCH') }}
-
+                            
                             <table class="border-2">
                                 <tr>
                                     <th>Fecha</th>
@@ -120,32 +121,34 @@
                                 
                                 @foreach ($alumno->escolaridades as $escolaridad)
                                 <tr>
-                                    <input class="hidden" value="{{ $escolaridad->escolaridades_id }}">
+                                    <input class="hidden" value="{{ $alumno->id }}">
+                                    <input class="hidden" value="{{ $escolaridad->id }}">
                                     <td id="date" class="w-1/12 bg-slate-50">
-                                        <input class="w-full" type="date" name="FechaEscolaridad" id="inputs" value="{{ $escolaridad->FechaEscolaridad }}">
+                                        <input class="w-full" type="date" name="escolaridad[FechaEscolaridad]" id="inputs" value="{{ $escolaridad->FechaEscolaridad }}">
                                     </td>
                                     <td id="curso" class="bg-slate-50">
                                         <input oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
-                                        class="w-full text-center" maxlength="1" min="1" max="6" type="number" name="CursoEscolaridad" id="inputs" value="{{ $escolaridad->CursoEscolaridad }}">
+                                        class="w-full text-center" maxlength="1" min="1" max="6" type="number" name="escolaridad[CursoEscolaridad]" id="inputs" value="{{ $escolaridad->CursoEscolaridad }}">
                                     </td>
                                     <td id="instrumento" class="w-2 bg-slate-50">
                                         <input oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
-                                        class="w-full text-center" min="1" max="12" maxlength="2<" type="number" name="CalificacionEscolaridad" id="inputs" value="{{ $escolaridad->CalificacionEscolaridad }}">
+                                        class="w-full text-center" min="1" max="12" maxlength="2<" type="number" name="escolaridad[CalificacionEscolaridad]" id="inputs" value="{{ $escolaridad->CalificacionEscolaridad }}">
                                     </td>
                                     <td id="calificacion" class="w-2 bg-slate-50">
                                         <input oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
-                                        class="w-full text-center" min="1" max="12" maxlength="2" type="number" name="CalificacionEscolaridad" id="inputs" value="{{ $escolaridad->Faltas }}">
+                                        class="w-full text-center" min="1" max="12" maxlength="2" type="number" name="escolaridad[CalificacionEscolaridad]" id="inputs" value="{{ $escolaridad->Faltas }}">
                                     </td>
                                     <td id="observacion" class="w-64 bg-slate-50">
-                                        <input class="w-full" type="text" name="Observacion" id="inputs" value="{{ $escolaridad->Observacion }}">
+                                        <input class="w-full" type="text" name="escolaridad[Observacion]" id="inputs" value="{{ $escolaridad->Observacion }}">
                                     </td>
                                 </tr>
                                 @endforeach
+
                             </table>
                         </form>
-                       
+                        
                     </div>
-
+                 
                       <!-- Instrumento -->                 
                       <div id="showInstrumento" class="hidden mt-2.5 relative right-2">
                         <form  id="form_3" action="{{ url('/instrumento') }}" method="post" enctype="multipart/form-data" >
@@ -186,7 +189,14 @@
                         </form>
                     </div>
             </ul>
-            
+           
+            <div>
+                <button id="coll-btn">
+                    <span class="material-symbols-outlined">
+                    expand_more
+                    </span>
+                </button>
+            </div>
 
         </section>
         
@@ -194,8 +204,8 @@
             <div id='datosAlumnos' class='flex justify-beetwen'>
                 <input id="submitDatos" class="hidden" form="form_1" type="submit">
                     <label for="submitDatos" class="hover:scale-110 flex flex-nowrap justify-beetwen items-center w-16 relative bottom-2 right-6 cursor-pointer">
-                        <img src="{{ asset('/img/alumno.png') }}" alt="Agregar datos de alumnos">
-                        <p class='uppercase whitespace-nowrap relative left-4 font-bold text-lg'>Enviar datos de alumno</p>  
+                        <img src="{{ asset('/img/alumno.png') }}" alt="Actualizar datos de alumnos">
+                        <p class='uppercase whitespace-nowrap relative left-4 font-bold text-lg'>Actualizar datos de alumno</p>  
                     </label>
             </div>
 
@@ -203,9 +213,9 @@
 
                 <div id="enviarLecto" class="">
                     <input id="submitEscolaridad" class="hidden" form="form_2" type="submit">
-                    <label for="submitEscolaridad" class="hover:scale-110 flex flex-nowrap justify-beetwen items-center w-16 relative bottom-2 right-20 cursor-pointer">
+                    <label for="submitEscolaridad" class="hover:scale-110 flex flex-nowrap justify-beetwen items-center w-16 relative bottom-2 right-32 cursor-pointer">
                         <img src="{{ asset('/img/calificacion.png') }}" alt="Agregar escolaridad">
-                        <p class='uppercase whitespace-nowrap relative left-4 font-bold text-lg'>Enviar calificaciones</p>  
+                        <p class='uppercase whitespace-nowrap relative left-4 font-bold text-lg'>Actualizar calificaciones</p>  
                     </label>
                 </div>
                 
@@ -269,19 +279,41 @@
         img.src= URL.createObjectURL(input.files[0]);
     };
 
-    // No mostrar filas con datos vacios.
+     // collapse button
+
+    let collBtn= document.querySelector('#coll-btn');
     let inputs = [...document.querySelectorAll('#inputs')];
     let nullInputs = []; 
-
-    inputs.forEach((input) => {
-        let valueInput = input.value;
-        if (valueInput === '') {
-            nullInputs.push(input);
-            let tr = input.closest('tr');
-            if (tr) {
-                tr.style.display = 'none';
+    
+    let table= document.querySelectorAll('#table-parent');
+    collBtn.addEventListener('click', ()=>{
+        for (let i = 0; i < table.length; i++) {
+        let nrow= document.createElement('tr');
+        const row= nrow.innerHTML= `
+                <tr>
+                    <input name="id" class="hidden">    
+                    <td id="date" class="w-1/12 bg-slate-50">
+                        <input class="w-full" type="date" name="FechaEscolaridad[]" value="">
+                    </td>
+                    <td id="curso" class="bg-slate-50">
+                        <input oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                        class="w-full text-center" maxlength="1" min="1" max="6" type="number" name="CursoEscolaridad[]" value="">
+                    </td>
+                    <td id="calificacion" class="w-2 bg-slate-50">
+                        <input oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                        class="w-full text-center" min="1" max="12" maxlength="2" type="number" name="CalificacionEscolaridad[]" value="">
+                    </td>
+                    <td id="faltas" class="w-2 bg-slate-50">
+                        <input oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                        class="w-full text-center" min="1" max="12" maxlength="2<" type="number" name="Faltas[]" value="">
+                    </td>
+                    <td id="observacion" class="w-64 bg-slate-50">
+                        <input class="w-full" type="text" name="Observacion[]" value="">
+                    </td>
+                </tr>
+            `
+                table[i].appendChild(nrow);
             }
-    }
     });
 </script>
 </html>

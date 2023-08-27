@@ -46,9 +46,9 @@
                     <label class="caracteristicas">Apellido</label>
                     <input class="values" type="text" readonly value="{{ $alumno->Apellido }}">
                     
-                    <label class="caracteristicas" for="id">Curso</label>
+                    <label class="caracteristicas" for="Curso">Curso</label>
                     <input oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
-                    class="values" max="6" minlength="1" maxlength="1" name="id" type="number" readonly value="{{ $alumno->id }}">
+                    class="values" max="6" minlength="1" maxlength="1" name="Curso" type="number" readonly value="{{ $alumno->Curso }}">
 
                     <label class="caracteristicas">Cédula</label>
                     <input oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"

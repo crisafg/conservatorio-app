@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hola</title>
+    <title>Pianistas</title>
     @vite('resources/css/app.css')
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
     <style>
@@ -14,7 +14,8 @@
 
     .keys {
       display: block;
-      width: 13rem;
+      width: 14rem;
+      /* margin-top: 2rem; */
       height: 4rem;
       position: relative;
     }
@@ -73,16 +74,31 @@
       left: 87%;    
     }
 
+    table {
+        background-image: linear-gradient(to right, #0284c7, #06b6d4 , #0284c7, #06b6d4 , #0284c7);
+        
+    }
+
+    th{
+        padding: 1.5rem;
+        border: none;
+   
+    }
+    td{
+        padding: 1rem;
+        border: none;
+    }
     </style>
 </head>
 <body class="bg-gradient-to-r from-blue-600 to-blue-700 text-gray-100">
-    <header class="flex justify-between">
-        <a class="h-12 text-black cursor-pointer" href="{{ asset('/conservatorio') }}">
+    <header class="flex justify-between items-end mt-6">
+        <a class="h-12 text-black cursor-pointer ml-2" href="{{ asset('/conservatorio') }}">
             <span class="material-symbols-outlined">home</span>
         </a>
 
-        <a class="text-black cursor-pointer" href="{{ asset ('conservatorio/create') }}">
-            <div class="keys right-72 top-2">
+        <audio id="pianito" src="{{ asset('/samples/piano.wav') }}" controls style="display:none"></audio>
+        <a onpointerdown="playAudio()" class="text-black cursor-pointer" href="{{ asset ('conservatorio/create') }}">
+            <div class="keys right-60 top-2">
                 <div data-key="65" class="key" id="Cmaj" data-note="C">
                 </div>
                 <div data-key="87" class="key sharp" data-note="C#">
@@ -106,16 +122,16 @@
                 <div data-key="71" class="key" id="Cmaj" data-note="G">
                     <span class="hints"></span>
                 </div>
-                <h1 class="whitespace-pre relative top-4 left-2 font-medium text-lg uppercase">Agregar datos de alumno</h1>
+                <h1 class="whitespace-pre relative top-4 left-2 font-semibold text-xl uppercase">Agregar nuevo alumno</h1>
             </div>
         </a>
     </header>
     
-    <main class="flex justify-start relative left-10 mt-5 w-24 whitespace-nowrap"> 
-        <table>
+    <main class="flex justify-center mt-10 whitespace-nowrap"> 
+        <table class="border rounded-xl overflow-hidden">
             <thead>
                 <tr>
-                    <th scope="col">Nombre</th>
+                    <th>Nombre</th>
                     <th scope="col">Apellido</th>
                     <th data-sortable="" scope="col">Curso</th>
                     <th>Datos del alumno</th>
@@ -123,22 +139,22 @@
                     <th>Borrar alumno</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody class="">
                 @foreach($alumnos as $alumno)
                 <tr>
                     <td class="text-lg">{{ $alumno->Nombre }}</td>
                     <td class="text-lg">{{ $alumno->Apellido }}</td>
-                    <td id="curso" class="text-center text-lg">{{ $alumno->id }}</td>
+                    <td id="curso" class="text-center text-lg">{{ $alumno->Curso }}</td>
                     <td>
-                        <a href="{{ route ('conservatorio.show', $alumno->id) }}" class="cursor-pointer flex justify-center">
-                            <span class="material-symbols-outlined">
+                        <a href="{{ route ('conservatorio.show', $alumno->id) }}" class="cursor-pointer flex justify-center ">
+                            <span class="material-symbols-outlined hover:text-blue-900 hover:font-semibold hover:scale-105">
                                 visibility
                             </span>
                         </a>
                     </td>
                     <td>
                         <a href="{{ route('conservatorio.edit', $alumno->id) }}">
-                            <span class="material-symbols-outlined">
+                            <span class="material-symbols-outlined hover:text-blue-900 hover:font-semibold hover:scale-105">
                                 edit
                             </span>
                         </a>
@@ -148,17 +164,29 @@
                             @csrf
                             {{ @method_field('delete') }}
                             <button type="submit" onclick="return confirm('Estás seguro de borrar?')">
-                                <span class="material-symbols-outlined">
+                                <span class="material-symbols-outlined hover:text-blue-900 hover:font-semibold hover:scale-105">
                                     delete
                                 </span>
-                            </button>     
+                            </button>
                         </form>
                     </td>
                 </tr>
         @endforeach
-        </table>
-    </main>
+    </table>
 
+</main>
+
+<nav>
+    <ul>
+        <li>
+            <a href="">
+                <span class="material-symbols-outlined">
+                square
+                </span>
+            </a>
+        </li>
+    </ul>
+</nav>
 
 </body>
 <script>
@@ -181,5 +209,11 @@
         })
     });
 
+
+    let pianito= document.querySelector('#pianito');
+    // let isAudioPlaying= true;
+    function playAudio () {
+        pianito.play();
+}
 </script>
 </html>
