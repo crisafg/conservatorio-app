@@ -11,6 +11,7 @@
         .material-symbols-outlined{
     font-size: 48px;
     }
+    
 
     .keys {
       display: block;
@@ -75,7 +76,7 @@
     }
 
     table {
-        background-image: linear-gradient(to right, #0284c7, #06b6d4 , #0284c7, #06b6d4 , #0284c7);
+        /* background-image: linear-gradient(to right, #0284c7, #06b6d4 , #0284c7, #06b6d4 , #0284c7); */
         
     }
 
@@ -89,9 +90,12 @@
         border: none;
     }
     </style>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 </head>
 <body class="bg-gradient-to-r from-blue-600 to-blue-700 text-gray-100">
-    <header class="flex justify-between items-end mt-6">
+    <header class="flex justify-between items-end mt-2">
         <a class="h-12 text-black cursor-pointer ml-2" href="{{ asset('/conservatorio') }}">
             <span class="material-symbols-outlined">home</span>
         </a>
@@ -127,21 +131,23 @@
         </a>
     </header>
     
-    <main class="flex justify-center mt-10 whitespace-nowrap"> 
+
+
+    <main class="flex flex-col items-center justify-center mt-10 whitespace-nowrap"> 
         <table class="border rounded-xl overflow-hidden">
             <thead>
                 <tr>
                     <th>Nombre</th>
-                    <th scope="col">Apellido</th>
-                    <th data-sortable="" scope="col">Curso</th>
+                    <th>Apellido</th>
+                    <th>Curso</th>
                     <th>Datos del alumno</th>
                     <th>Editar</th>
                     <th>Borrar alumno</th>
                 </tr>
             </thead>
-            <tbody class="">
+            <tbody>
                 @foreach($alumnos as $alumno)
-                <tr>
+                <tr id="table-row">
                     <td class="text-lg">{{ $alumno->Nombre }}</td>
                     <td class="text-lg">{{ $alumno->Apellido }}</td>
                     <td id="curso" class="text-center text-lg">{{ $alumno->Curso }}</td>
@@ -163,7 +169,7 @@
                         <form action="{{ $alumno->id  }}" class="flex justify-center" method="post">
                             @csrf
                             {{ @method_field('delete') }}
-                            <button type="submit" onclick="return confirm('Estás seguro de borrar?')">
+                            <button type="button" onclick="confirmDelete()">
                                 <span class="material-symbols-outlined hover:text-blue-900 hover:font-semibold hover:scale-105">
                                     delete
                                 </span>
@@ -171,22 +177,25 @@
                         </form>
                     </td>
                 </tr>
-        @endforeach
+        @endforeach 
     </table>
+    {!! $alumnos->render('custom_pagination') !!}
 
+    <!-- <nav id="flechas" class="flex justify-around w-96 mt-4 text-gray-500">
+        <a href="#" id="prev-page">
+            <span class="material-symbols-outlined">
+                arrow_back
+            </span>
+        </a>
+        <a href="#" id="next-page">
+            <span class="material-symbols-outlined">
+                arrow_forward
+            </span>
+        </a>
+    </nav> -->
+    
 </main>
 
-<nav>
-    <ul>
-        <li>
-            <a href="">
-                <span class="material-symbols-outlined">
-                square
-                </span>
-            </a>
-        </li>
-    </ul>
-</nav>
 
 </body>
 <script>
@@ -215,5 +224,31 @@
     function playAudio () {
         pianito.play();
 }
+
+//flechas
+
+let tableRow= document.querySelector('#table-row');
+let flechas= document.querySelector('#flechas');
+
+function confirmDelete() {
+        Swal.fire({
+            title: 'Estas seguro que quieres borrar?',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Sí, borrar',
+            cancelButtonText: 'Cancelar',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire(
+                    'Borrado!',
+                    'El alumno ha sido eliminado con éxito',
+                    'success'
+                );
+                document.forms[0].submit(); // Asegúrate de que este índice (0) sea el correcto si tienes varios formularios en la página.
+            }
+        });
+    }
 </script>
 </html>

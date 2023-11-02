@@ -9,13 +9,33 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 </head>
-<!-- <script src="https://cdn.tailwindcss.com"></script> -->
-    <!-- <style type="text/tailwindcss">
-        #items{
-            @apply text-xl border border-slate-600;
+<script src="https://cdn.tailwindcss.com"></script>
+    <style type="text/tailwindcss">
+        .sugerencias_item{
+           @apply relative flex justify-items-center justify-between text-center items-center bg-slate-200 w-[28rem] p-3;
         }
-    </style> -->
+        #sugerencias li{
+            @apply cursor-default rounded border border-blue-800;
+        }
+        #sugerencias li:hover{
+            @apply bg-cyan-700 text-white;
+        }
+        #sugerencias li:hover .view .edit{
+            @apply bg-cyan-700 text-white;
+        }
+        .material-symbols-outlined{
+            font-size: 2rem;
+        }
+        .view{
+            @apply cursor-pointer relative right-6;
+        }
+        .edit{
+            @apply cursor-pointer;
+        }
+       
+    </style>
 
 <body class="bg-gradient-to-r from-blue-600 to-blue-700">
     <header class="bg-gradient-to-r from-blue-600 to-blue-700 h-32">
@@ -28,13 +48,9 @@
             </p>
             
             <!-- Buscador -->
-            <div class="">
-                <input class="w-[28rem]  p-3 rounded" id="search"  placeholder="Buscar por nombre, apellido o cédula..."  type="text">
-                    <ul class='absolute bg-slate-200  w-[28rem] p-3 ' id="sugerencias">
-                        <li class="border border-slate-400 ">hola</li>
-                        <li >ca</li>
-                    </ul>
-                </input>
+            <div class="flex flex-col justify-center">
+                <input class="outline-none absolute w-[28rem] p-3 rounded" type="text" id="search" placeholder="Buscar por nombre o apellido..."  type="text"></input>
+                <ul class='absolute w-[28rem] flex flex-col top-20 text-lg font-semibold' id="sugerencias"></ul>
             </div> 
         </div>
     </header>
@@ -77,19 +93,79 @@
 </body>
 <script>
 let search = document.querySelector('#search');
-// let sugerencias= document.querySelector('#sugerencias');
+let sugerencias= document.querySelector('#sugerencias');
 var alumnos = <?php echo json_encode($alumno)?>;
 
-    search.addEventListener('input', () => {
-        const searched = search.value.toLowerCase();
+search.addEventListener('input', () => {
+    const searched = search.value.toLowerCase();
+    sugerencias.innerHTML = '';
 
-        for (let i = 0; i < alumnos.length; i++) {
-            let alumno = alumnos[i].Nombre.toLowerCase().charAt();
+    if (searched === '') {
+        return;
+    }
 
-            if (alumno.includes(searched)) {
-                console.log(alumnos[i].Nombre);
-            }
-        }
-    });
+    for (let i = 0; i < alumnos.length; i++) {
+    const nombreCompleto = alumnos[i].Nombre.toLowerCase() + ' ' + alumnos[i].Apellido.toLowerCase();
+    const apellido = alumnos[i].Apellido.toLowerCase();
+
+    if (nombreCompleto.startsWith(searched)) {
+        let item = document.createElement('li');
+        item.classList.add('sugerencias_item');
+        item.textContent = nombreCompleto;
+
+        const linksDiv = document.createElement('div');
+
+        const viewLink = document.createElement('a');
+        viewLink.classList.add('view');
+        viewLink.href = `conservatorio/${alumnos[i].id}`; 
+        viewLink.innerHTML = '<span class="material-symbols-outlined">visibility</span>';
+
+        // Crear el enlace "edit"
+        const editLink = document.createElement('a');
+        editLink.classList.add('edit');
+        editLink.href = `conservatorio/edit/${alumnos[i].id}`;
+        editLink.innerHTML = '<span class="material-symbols-outlined">edit</span>';
+
+        linksDiv.appendChild(viewLink);
+        linksDiv.appendChild(editLink);
+
+        item.appendChild(linksDiv);
+
+        sugerencias.appendChild(item);
+    }
+
+    if (apellido.startsWith(searched)) {
+        let item = document.createElement('li');
+        item.classList.add('sugerencias_item');
+        item.textContent = nombreCompleto;
+
+        // Crear el div para envolver los enlaces
+        const linksDiv = document.createElement('div');
+
+        // Crear el enlace "view"
+        const viewLink = document.createElement('a');
+        viewLink.classList.add('view');
+        viewLink.href = `conservatorio/${alumnos[i].id}`; // Reemplaza con la URL adecuada
+        viewLink.innerHTML = '<span class="material-symbols-outlined">visibility</span>';
+
+        // Crear el enlace "edit"
+        const editLink = document.createElement('a');
+        editLink.classList.add('edit');
+        editLink.href = `conservatorio/edit/${alumnos[i].id}`; // Reemplaza con la URL adecuada
+        editLink.innerHTML = '<span class="material-symbols-outlined">edit</span>';
+
+        // Agregar los enlaces al div
+        linksDiv.appendChild(viewLink);
+        linksDiv.appendChild(editLink);
+
+        // Agregar el div de enlaces al elemento li
+        item.appendChild(linksDiv);
+
+        sugerencias.appendChild(item);
+    }
+}
+
+});
+
 </script>
 </html>

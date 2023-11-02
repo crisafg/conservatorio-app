@@ -15,9 +15,26 @@
         transform:translateX(100%);
     }
     </style>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<!-- Toasty msg al enviar formularios -->
+@if (session('datosEnviados'))
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var datosEnviados = <?php echo json_encode(session('datosEnviados')) ?>;
+            Swal.fire({
+                title: datosEnviados,
+                icon: 'success'
+            });
+        });
+    </script>
+@endif
+
 </head>
 <body class="bg-gradient-to-r from-blue-600 to-blue-700 text-gray-100">
-    
+    <main class="max-xl:w-[1200px] 2xl:[2132px]">
+        
     <header class="flex flex-wrap h-8">
         <a class="h-12 text-black cursor-pointer" href="{{ asset('/conservatorio') }}">
             <button>
@@ -34,59 +51,66 @@
         </a>
     </header>
     
-    <section class="flex ml-20">
+    <section class="flex ml-20 justify-normal xl:justify-evenly 2xl:mt-16">
         <div>
+      
             <form id="form_1" action="{{ url('/conservatorio') }}" method="post" enctype="multipart/form-data" class="contents">
                 <ul class="grid grid-cols-2 items-baseline">
                             @csrf        
-                    <input class="hidden" type="file" name="Foto"  id="imagen">
-                    <label for="imagen" id='imgUploaded'  class="absolute left-[88rem] bottom-[22rem] w-14 cursor-pointer">
-                        <img id='img' src="{{ asset('/img/add_photo.png') }}" alt="Agregar foto">
+                    <input class="hidden" type="file" name="Foto" id="imagen">
+                    <label for="imagen" id='imgUploaded' class="absolute left-[88rem] bottom-[22rem] w-14 cursor-pointer">
+                        @if(session('rutaImagen'))
+                            <img  class="relative left-14 w-[7rem]" id='img' src="{{ asset('storage/' . session('rutaImagen')) }}" alt="Imagen del alumno">
+                        @else
+                            <img id='img' src="{{ asset('/img/add_photo.png') }}" alt="Agregar foto">
+                        @endif
                     </label>
 
+
+
                     <label class="caracteristicas" for="Nombre">Nombre</label>
-                    <input class="values" type="text" name="Nombre" value="Juan">
+                    <input class="values" type="text" name="Nombre"  value="{{ old('Nombre', session('datosAlumno.Nombre')) }}">
 
                     <label class="caracteristicas" for="Apellido">Apellido</label>
-                    <input class="values" type="text" name="Apellido" value="Perez">
+                    <input class="values" type="text" name="Apellido" value="{{ old('Apellido', session('datosAlumno.Apellido')) }}">
                     
                     <label class="caracteristicas" for="Curso">Curso</label>
                     <input oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
-                    class="values" max="6" minlength="1" maxlength="1" name="Curso" type="number" value="1">
+                    class="values" max="6" minlength="1" maxlength="1" name="Curso" type="number" value="{{ old('Curso', session('datosAlumno.Curso')) }}">
                     
                     <label class="caracteristicas" for="Cedula">Cédula</label>
                     <input oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
-                    class="values" id="numbers" minlength="1" maxlength="8" name="Cedula" type="number" value="52736465">
+                    class="values" id="numbers" minlength="1" maxlength="8" name="Cedula" type="number" value="{{ old('Cedula', session('datosAlumno.Cedula')) }}">
 
                     <label class="caracteristicas" for="Edad">Edad</label>
                     <input oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
-                    class="values" min="6" minlength="1" maxlength="2" name="Edad" type="number" value="23">
+                    class="values" min="6" minlength="1" maxlength="2" name="Edad" type="number" value="{{ old('Edad', session('datosAlumno.Edad')) }}">
                 
                     <label class="caracteristicas" for="FechaNacimiento">Fecha de nacimiento</label>
-                    <input class="values" class="values w-44" name="FechaNacimiento" max="4" type="date" value="2000-12-20">
+                    <input class="values" class="values w-44" name="FechaNacimiento" max="4" type="date" value="{{ old('FechaNacimiento', session('datosAlumno.FechaNacimiento')) }}">
                 
                     <label class="caracteristicas" for="Telefono">Teléfono</label>
                     <input oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
-                    class="values" minlength="1" maxlength="8" name="Telefono" type="tel" value="09432345">
+                    class="values" minlength="1" maxlength="8" name="Telefono" type="tel" value="{{ old('Telefono', session('datosAlumno.Telefono')) }}">
 
                     <label class="caracteristicas" for="Domicilio">Domicilio</label>
-                    <input class="values" type="text" name="Domicilio" value="Barbieri">
+                    <input class="values" type="text" name="Domicilio"value="{{ old('Domicilio', session('datosAlumno.Domicilio')) }}">
 
                     <label class="caracteristicas" for="NombrePadre">Nombre del padre</label>
-                    <input class="values" type="text" name="NombrePadre" value="">
+                    <input class="values" type="text" name="NombrePadre" value="{{ old('NombrePadre', session('datosAlumno.NombrePadre')) }}">
 
                     <label class="caracteristicas" for="NombreMadre">Nombre de la madre</label>
-                    <input class="values" type="text" name="NombreMadre" value="">
+                    <input class="values" type="text" name="NombreMadre" value="{{ old('NombreMadre', session('datosAlumno.NombreMadre')) }}">
                 
                     <label class="caracteristicas" for="NombreTutor">Nombre del tutor</label>
-                    <input class="values" type="text" name="NombreTutor" value="">
+                    <input class="values" type="text" name="NombreTutor" value="{{ old('NombreTutor', session('datosAlumno.NombreTutor')) }}">
 
                     <label class="caracteristicas" for="FechaIngreso">Fecha de Ingreso</label>
-                    <input class="values" maxlength="2" type="date" name="FechaIngreso" value="2021-02-05">
+                    <input class="values" maxlength="2" type="date" name="FechaIngreso" value="{{ old('FechaIngreso', session('datosAlumno.FechaIngreso')) }}">
             
                     <label class="caracteristicas" for="Celular">Celular</label>
                     <input oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
-                    class="values" minlength="1" maxlength="9" type="number" name="Celular" value="09934845"> 
+                    class="values" minlength="1" maxlength="9" type="number" name="Celular" value="{{ old('Celular', session('datosAlumno.Celular')) }}">
                 </form>
             </div>
         <!-- Escolaridad -->                 
@@ -105,22 +129,22 @@
                     <tr>
                         <input name="id" class="hidden">
                         <td id="date" class="w-1/12 bg-slate-50">
-                            <input class="w-full" type="date" name="FechaEscolaridad[]" value="2021-05-09">
+                            <input class="w-full" type="date" name="FechaEscolaridad[0]"  value="{{ session('fechaEscolaridad') }}">
                         </td>
                         <td id="curso" class="bg-slate-50">
                             <input oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
-                            class="w-full text-center" maxlength="1" min="1" max="6" type="number" name="CursoEscolaridad[]" value="1">
+                            class="w-full text-center" maxlength="1" min="1" max="6" type="number" name="CursoEscolaridad[]" value="{{ session('CursoEscolaridad') }}">
                         </td>
                         <td id="calificacion" class="w-2 bg-slate-50">
                             <input oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
-                            class="w-full text-center" min="1" max="12" maxlength="2" type="number" name="CalificacionEscolaridad[]" value="12">
+                            class="w-full text-center" min="1" max="12" maxlength="2" type="number" name="CalificacionEscolaridad[]" value="{{ old('CalificacionEscolaridad') }}">
                         </td>
                         <td id="faltas" class="w-2 bg-slate-50">
                             <input oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
-                            class="w-full text-center" min="1" max="12" maxlength="2<" type="number" name="Faltas[]" value="2">
+                            class="w-full text-center" min="1" max="12" maxlength="2<" type="number" name="Faltas[]" value="{{ old('Faltas') }}">
                         </td>
                         <td id="observacion" class="w-64 bg-slate-50">
-                            <input class="w-full" type="text" name="Observacion[]" value="Buen alumno, siga asi!">
+                            <input class="w-full" type="text" name="Observacion[]" value="{{ old('Observacion') }}">
                         </td>
                     </tr>
 
@@ -176,7 +200,7 @@
             </div>
         </section>
         
-        <footer class="mt-2 flex justify-around items-center relative right-32">
+        <footer class="mt-2 xl:mt-12 flex justify-around items-center relative right-32">
             <div id='datosAlumnos' class='flex justify-beetwen'>
                 <input id="submitDatos" class="hidden" form="form_1" type="submit">
                     <label for="submitDatos" class="hover:scale-110 flex flex-nowrap justify-beetwen items-center w-16 relative bottom-2 right-6 cursor-pointer">
@@ -212,8 +236,32 @@
                 </div>
             </div>
         </footer>
+    </main>
 
 </body>
+
+@if($errors->count() > 0)
+        <div id="error_div" class="hidden">
+            @foreach ($errors->all() as $error)
+                {{ $error }}<br/>
+            @endforeach
+        </div>
+    @endif
+    @if ($errors->count()>0)
+    <script>
+        var errorContent = document.querySelector("#error_div").innerHTML;
+        var has_errors= <?php ?> {{ $errors->count() > 0 ? 'true' : 'false'}}
+            if (has_errors){
+                    // let errorMessage = 'Los siguientes campos tienen errores:<br>' + errorMessages.join('<br>');
+                    Swal.fire({ 
+                        title: 'Atención',
+                        icon: 'warning',
+                        html: errorContent,
+                    });
+            }
+    </script>
+    @endif
+
 <script>
     // Switch button
     const btn= document.querySelector('#toggle');
@@ -297,5 +345,8 @@
             }
     });
 
+    // 
+
+   
 </script>
 </html>

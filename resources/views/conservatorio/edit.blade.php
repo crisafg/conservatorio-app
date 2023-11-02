@@ -21,7 +21,26 @@
     .active{
         transform:translateX(100%);
     }
+    th {
+        width: 4rem;
+    }
     </style>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <!-- Toasty msg al enviar formularios -->
+    @if (session('datosUpdate'))
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                var datosEnviados = <?php echo json_encode(session('datosUpdate')) ?>;
+                Swal.fire({
+                    title: datosEnviados,
+                    icon: 'success'
+                });
+            });
+        </script>
+    @endif
+
 </head>
 <body class="bg-gradient-to-r from-blue-600 to-blue-700 text-gray-100">
     
@@ -110,7 +129,7 @@
                         @csrf
                             {{ method_field('PATCH') }}
                             
-                            <table class="border-2">
+                            <table id="table-parent" class="border-2">
                                 <tr>
                                     <th>Fecha</th>
                                     <th>Curso</th>
@@ -288,8 +307,9 @@
     let table= document.querySelectorAll('#table-parent');
     collBtn.addEventListener('click', ()=>{
         for (let i = 0; i < table.length; i++) {
-        let nrow= document.createElement('tr');
-        const row= nrow.innerHTML= `
+            // console.log('ghola');
+            let nrow= document.createElement('tr');
+            const row= nrow.innerHTML= `
                 <tr>
                     <input name="id" class="hidden">    
                     <td id="date" class="w-1/12 bg-slate-50">

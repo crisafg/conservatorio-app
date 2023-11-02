@@ -35,7 +35,9 @@
 
     </header>
     
-    
+    <!-- @if(Session::has('mensaje'))
+    {{ Session::get('mensaje') }}
+    @endif -->
     <section class="flex ml-20">
     <div>
             <ul class="grid grid-cols-2 items-baseline">
@@ -161,7 +163,7 @@
                     </div>
             </ul>
             
-            <div class=" top-1 flex flex-wrap items-center">
+            <div class="top-1 flex flex-wrap items-center">
                 <img class="relative left-14 w-[7rem]" id="imagen" src="{{ asset('/storage').'/'.$alumno->Foto }}">
             </div>
 

@@ -12,12 +12,15 @@ use Illuminate\Support\Facades\DB;
 class AlumnosController extends Controller
 {
     //
-    public function show($alumnos)
+    public function show()
     {
         //
         $alumnos = Alumno::with('escolaridades', 'instrumentos')
         ->orderBy('Curso', 'asc')
-        ->get();
+        ->paginate(6);  
+        // $alumnos->setPath('alumnos/vistaGeneral');
+
+        // ->get();
         return view('alumnos.vistaGeneral', ['alumnos' => $alumnos]);
     }
 

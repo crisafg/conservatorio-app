@@ -33,5 +33,5 @@ Route::get('conservatorio/{id}', [App\Http\Controllers\AlumnoController::class, 
 // Route::get('carnet/edit/{id}', [App\Http\Controllers\EscolaridadController::class, 'edit'])->name('carnet.edit');
 // Route::patch('carnet/edit/{id}', [App\Http\Controllers\EscolaridadController::class, 'update'])->name('carnet.update');
 
-// Route::get('alumnos/vistaGeneral', [App\Http\Controllers\AlumnosController::class, 'show'])->name('alumnos.show');
+Route::get('alumnos/vistaGeneral', [App\Http\Controllers\AlumnosController::class, 'show'])->name('alumnos.show');
 // Route::get('instrumento/index', 'instrumento@show')->name('instrumento.show');

@@ -17,10 +17,10 @@ return new class extends Migration
             Schema::create('alumnos', function (Blueprint $table) {
                 $table->engine = 'InnoDB';  
                 $table->id();
-                $table->string('Curso');
                 $table->string('Foto');
                 $table->string('Nombre');
                 $table->string('Apellido');
+                $table->string('Curso');
                 $table->string('Cedula');
                 $table->string('Edad');
                 $table->string('FechaNacimiento');
